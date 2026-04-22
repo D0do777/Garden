@@ -1,325 +1,134 @@
 
 <style>
-*{box-sizing:border-box;}
-#bloom{font-family:var(--font-sans);padding:.75rem 0;}
-.layout{display:flex;gap:14px;align-items:flex-start;}
-.lp{flex:0 0 auto;}
-.rp{flex:1;min-width:0;}
-.meta{display:flex;gap:5px;margin-bottom:7px;flex-wrap:wrap;}
-.sbadge{font-size:10px;font-weight:500;padding:3px 9px;border-radius:10px;}
-.garden{display:grid;grid-template-columns:repeat(5,63px);gap:3px;}
-.cell{width:63px;height:63px;border-radius:7px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;border:1.5px solid transparent;transition:transform .1s;user-select:none;}
-.cell:hover{transform:scale(1.06);z-index:2;}
-.can-place{outline:2.5px solid #639922;outline-offset:-2px;cursor:crosshair;}
-.tf{background:#FBEAF0;}.tb{background:#EAF3DE;}.ts{background:#F1EFE8;}.tp{background:#E6F1FB;}.ta{background:#D3D1C7;}.tro{background:#FEF0F4;}.tfo{background:#EAF3F8;}
-.tbadge{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);font-size:8.5px;font-weight:500;padding:2px 5px;border-radius:8px;white-space:nowrap;}
-.tw{background:#B5D4F4;color:#0C447C;}.td{background:#FAC775;color:#633806;}.tt{background:#C0DD97;color:#27500A;}
-@keyframes rise{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-36px)}}
-.cpop{position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:500;color:#854F0B;pointer-events:none;animation:rise .8s ease-out forwards;z-index:20;white-space:nowrap;}
-.parcels{margin-top:5px;display:flex;flex-direction:column;gap:4px;}
-.par-row{background:var(--color-background-secondary);border:1.5px dashed var(--color-border-secondary);border-radius:8px;padding:6px 8px;display:flex;align-items:center;gap:8px;}
-.par-cells{display:flex;gap:2px;flex-shrink:0;}
-.par-cell{width:18px;height:18px;background:#D3D1C7;border-radius:3px;display:flex;align-items:center;justify-content:center;}
-.par-info{flex:1;min-width:0;}
-.par-name{font-size:11px;font-weight:500;color:var(--color-text-secondary);}
-.par-price{font-size:10px;color:#854F0B;font-weight:500;}
-.pbtn{background:transparent;border:0.5px solid #BA7517;border-radius:6px;padding:4px 9px;font-size:10px;color:#854F0B;cursor:pointer;font-family:var(--font-sans);font-weight:500;white-space:nowrap;flex-shrink:0;}
-.pbtn:hover:not(:disabled){background:#FAEEDA;}
-.pbtn:disabled{opacity:.35;cursor:not-allowed;border-color:var(--color-border-tertiary);color:var(--color-text-tertiary);}
-.stat-row{display:flex;gap:5px;margin-bottom:7px;}
-.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:6px 7px;flex:1;text-align:center;}
-.slbl{font-size:9px;color:var(--color-text-tertiary);}
-.sval{font-size:15px;font-weight:500;color:var(--color-text-primary);}
-.bar-row{display:flex;justify-content:space-between;align-items:center;font-size:9px;color:var(--color-text-tertiary);margin-bottom:2px;}
-.rtag{font-size:9px;font-weight:500;padding:2px 6px;border-radius:6px;}
-.bbar{background:var(--color-background-secondary);height:5px;border-radius:3px;overflow:hidden;margin-bottom:5px;}
-.pfill{height:100%;background:#639922;border-radius:3px;transition:width .5s;}
-.xfill{height:100%;background:#7F77DD;border-radius:3px;transition:width .5s;}
-.section-lbl{font-size:9px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin:7px 0 4px;}
-.shop-wrap{display:flex;flex-direction:column;gap:4px;}
-.sitem{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:6px 8px;cursor:pointer;display:flex;align-items:center;gap:6px;}
-.sitem:hover:not(.dis):not(.lck){border-color:var(--color-border-primary);}
-.sitem.active{border:2px solid #639922;background:#EAF3DE;}
-.sitem.dis{opacity:.3;cursor:not-allowed;}
-.sitem.lck{opacity:.42;cursor:not-allowed;}
-.iname{font-size:11px;font-weight:500;color:var(--color-text-primary);}
-.iprice{font-size:9px;color:#854F0B;font-weight:500;}
-.ilvl{font-size:8px;font-weight:500;background:#EEEDFE;color:#534AB7;padding:1px 5px;border-radius:5px;margin-left:3px;}
-.btn{background:transparent;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:7px 10px;font-size:11px;color:var(--color-text-primary);cursor:pointer;font-family:var(--font-sans);width:100%;text-align:center;margin-top:5px;}
-.btn:hover{background:var(--color-background-secondary);}
-.btng{background:#639922;border-color:#3B6D11;color:#EAF3DE;}
-.btng:hover{background:#3B6D11;}
-.log{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:7px 9px;font-size:10.5px;color:var(--color-text-secondary);min-height:36px;line-height:1.5;margin-top:5px;}
-@keyframes lpop{0%{opacity:0;transform:scale(.85)}60%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
-.lvlbanner{display:none;background:#EEEDFE;border:0.5px solid #AFA9EC;border-radius:var(--border-radius-md);padding:7px 10px;font-size:11px;color:#3C3489;font-weight:500;text-align:center;margin-bottom:7px;}
-.lvlbanner.show{display:block;animation:lpop .4s ease;}
-@keyframes rainAnim{0%{opacity:0;transform:translateY(-5px)}60%{opacity:1}100%{opacity:0;transform:translateY(8px)}}
-.raindrop{position:absolute;width:2px;height:8px;background:#85B7EB;border-radius:2px;animation:rainAnim .6s ease-in infinite;pointer-events:none;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+#root{font-family:var(--font-sans);max-width:500px;margin:0 auto;padding:.5rem;}
+.view{display:none;}.view.on{display:block;}
+.tabs{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:7px;}
+.tab{flex:1;padding:8px 2px;font-size:11px;font-weight:500;color:var(--color-text-secondary);text-align:center;cursor:pointer;border-bottom:2px solid transparent;font-family:var(--font-sans);}
+.tab.on{color:#27500A;border-bottom-color:#639922;}
+.stg{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:5px;}
+.st{background:var(--color-background-secondary);border-radius:7px;padding:4px 2px;text-align:center;}
+.sl{font-size:7px;color:var(--color-text-tertiary);display:block;}
+.sv{font-size:14px;font-weight:500;color:var(--color-text-primary);}
+.brow{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:4px;}
+.bk{font-size:9px;font-weight:500;padding:2px 7px;border-radius:7px;}
+.br{display:flex;justify-content:space-between;font-size:8px;color:var(--color-text-tertiary);margin-bottom:1px;}
+.bbg{background:var(--color-background-secondary);height:4px;border-radius:2px;overflow:hidden;margin-bottom:3px;}
+.bf{height:100%;border-radius:2px;transition:width .4s;}
+#pan-wrap{width:100%;overflow:hidden;position:relative;border-radius:8px;touch-action:none;user-select:none;margin-bottom:4px;cursor:grab;}
+#pan-wrap:active{cursor:grabbing;}
+#pan-inner{position:absolute;top:0;left:0;display:grid;gap:3px;}
+.c{border-radius:5px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.cp{outline:2.5px solid #639922;outline-offset:-2px;}
+.tb{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);font-size:6px;font-weight:500;padding:1.5px 3px;border-radius:4px;white-space:nowrap;pointer-events:none;}
+.bw{background:#B5D4F4;color:#0C447C;}.bd{background:#FAC775;color:#633806;}.bt{background:#C0DD97;color:#27500A;}
+@keyframes rise{0%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-22px)}}
+.pp{position:absolute;top:0;left:50%;font-size:10px;font-weight:500;color:#854F0B;pointer-events:none;animation:rise .65s ease-out forwards;z-index:10;white-space:nowrap;}
+.expg{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:5px;}
+.ebtn{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:7px;padding:7px 4px;font-size:9px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-sans);}
+.ebtn:disabled{opacity:.22;cursor:not-allowed;}
+.btn{width:100%;background:transparent;border:0.5px solid var(--color-border-secondary);border-radius:8px;padding:11px;font-size:12px;font-weight:500;color:var(--color-text-primary);cursor:pointer;font-family:var(--font-sans);text-align:center;margin-top:4px;}
+.btn:active{opacity:.7;}.btng{background:#639922;border-color:#3B6D11;color:#EAF3DE;}
+.log{background:var(--color-background-secondary);border-radius:7px;padding:5px 8px;font-size:10px;color:var(--color-text-secondary);margin-top:4px;min-height:28px;line-height:1.5;}
+.flts{display:flex;gap:3px;overflow-x:auto;padding-bottom:2px;margin-bottom:5px;}
+.flt{background:transparent;border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:5px 10px;font-size:10px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;white-space:nowrap;font-family:var(--font-sans);}
+.flt.on{background:#EAF3DE;border-color:#639922;color:#27500A;}
+.shg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;}
+.sc{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:7px;padding:5px 2px 4px;cursor:pointer;text-align:center;}
+.sc:active:not(.lk):not(.di){opacity:.6;}.sc.sl2{border:2px solid #639922;background:#EAF3DE;}
+.sc.lk,.sc.di{opacity:.22;cursor:not-allowed;}
+.sn{font-size:9px;font-weight:500;color:var(--color-text-primary);margin-top:2px;line-height:1.2;}
+.sp{font-size:8px;color:#854F0B;}.ss2{font-size:7px;color:var(--color-text-tertiary);}
+.lbr{display:flex;align-items:center;gap:7px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.lbrk{width:22px;font-size:12px;text-align:center;flex-shrink:0;}
+.lbn{flex:1;font-size:11px;font-weight:500;color:var(--color-text-primary);}
+.lbv{font-size:10px;color:var(--color-text-secondary);}
+.si-r{display:flex;gap:5px;margin-bottom:7px;}
+.si-i{flex:1;padding:8px 10px;border:0.5px solid var(--color-border-tertiary);border-radius:7px;font-size:12px;font-family:var(--font-sans);background:var(--color-background-primary);color:var(--color-text-primary);}
+.si-b{padding:8px 14px;background:#639922;border:none;border-radius:7px;font-size:12px;font-weight:500;color:#EAF3DE;cursor:pointer;font-family:var(--font-sans);}
+.setup-card{background:var(--color-background-secondary);border-radius:12px;padding:1.5rem;margin:1rem 0;}
+@keyframes bpop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+#bnr{background:#EEEDFE;border:0.5px solid #AFA9EC;border-radius:7px;padding:6px 9px;font-size:10px;color:#3C3489;font-weight:500;text-align:center;margin-bottom:5px;}
 </style>
 
-<h2 class="sr-only">Bloom v2 — jeu tycoon de jardinage avec saisons, niveaux XP, météo et extension de terrain</h2>
-<div id="bloom">
-  <div class="lvlbanner" id="lvlbanner"></div>
-  <div class="layout">
-    <div class="lp">
-      <div class="meta" id="meta"></div>
-      <div class="garden" id="garden"></div>
-      <div class="parcels" id="parcels"></div>
-    </div>
-    <div class="rp">
-      <div class="stat-row" id="stats"></div>
-      <div class="bar-row"><span>Prestige</span><span id="vPres">0/100</span><span class="rtag" id="vRating" style="background:#EAF3DE;color:#27500A;">Débutant</span></div>
-      <div class="bbar"><div class="pfill" id="pbar" style="width:0%"></div></div>
-      <div class="bar-row"><span id="vLvl">Niv. 1</span><span id="vXP">0/50 XP</span></div>
-      <div class="bbar"><div class="xfill" id="xbar" style="width:0%"></div></div>
-      <div class="section-lbl">Boutique</div>
-      <div class="shop-wrap" id="shop"></div>
-      <button class="btn btng" onclick="nextDay()">Nouveau jour →</button>
-      <button class="btn" id="cancelBtn" style="display:none;" onclick="cancelSel()">Annuler placement</button>
-      <div class="log" id="log">Bienvenue ! Cliquez sur les badges colorés pour effectuer les tâches et gagner des pièces et XP.</div>
-    </div>
+<h2 class="sr-only">Bloom v4 — jardin tycoon mobile multijoueur avec expansion 4 directions, classement et recherche</h2>
+<div id="root">
+<div id="bnr" style="display:none;"></div>
+
+<div id="vsetup" class="view on">
+  <div class="setup-card">
+    <p style="font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:.4rem;">Bienvenue dans Bloom</p>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:1rem;line-height:1.6;">Choisissez un pseudo unique — il sera visible dans le classement mondial des jardiniers.</p>
+    <input type="text" id="pinput" maxlength="18" placeholder="MonPseudo42" oninput="this.value=this.value.replace(/[^a-zA-Z0-9_-]/g,'')" style="width:100%;margin-bottom:4px;padding:9px 12px;border:0.5px solid var(--color-border-tertiary);border-radius:8px;font-size:13px;font-family:var(--font-sans);background:var(--color-background-primary);color:var(--color-text-primary);">
+    <div id="perr" style="font-size:10px;color:#A32D2D;min-height:14px;margin-bottom:5px;"></div>
+    <button class="btn btng" id="pbtn" onclick="createPseudo()">Créer mon jardin →</button>
   </div>
 </div>
 
+<div id="vgame" class="view">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+    <span id="hdr" style="font-size:13px;font-weight:500;color:var(--color-text-primary);"></span>
+    <span id="hdrs" style="font-size:9px;color:var(--color-text-tertiary);"></span>
+  </div>
+  <div class="tabs">
+    <div class="tab on" id="t-g" onclick="setTab('g')">Jardin</div>
+    <div class="tab" id="t-s" onclick="setTab('s')">Boutique</div>
+    <div class="tab" id="t-l" onclick="setTab('l')">Classement</div>
+    <div class="tab" id="t-f" onclick="setTab('f')">Chercher</div>
+  </div>
+  <div id="v-g" class="view on">
+    <div class="stg" id="stg"></div>
+    <div class="brow" id="brow"></div>
+    <div id="brs"></div>
+    <div id="pan-wrap"><div id="pan-inner"></div></div>
+    <div class="expg" id="expg"></div>
+    <div style="display:flex;gap:4px;">
+      <button class="btn btng" style="flex:1;" onclick="nextDay()">Jour suivant →</button>
+      <button class="btn" id="cbtn" style="display:none;flex:0 0 auto;width:46px;padding:11px 0;" onclick="cancelSel()">✕</button>
+    </div>
+    <div class="log" id="log"></div>
+  </div>
+  <div id="v-s" class="view">
+    <div class="flts" id="flts"></div>
+    <div class="shg" id="shg"></div>
+    <button class="btn" id="cbtn2" style="display:none;" onclick="cancelSel()">✕ Annuler sélection</button>
+    <div class="log" style="margin-top:5px;">Sélectionnez un élément, puis allez dans Jardin pour le placer sur une case verte.</div>
+  </div>
+  <div id="v-l" class="view">
+    <div class="flts" id="lbf"></div>
+    <div id="lbl"><div style="font-size:11px;color:var(--color-text-tertiary);padding:1rem 0;text-align:center;">Chargement...</div></div>
+    <button class="btn" onclick="loadLeaderboard()">Actualiser</button>
+  </div>
+  <div id="v-f" class="view">
+    <div class="si-r">
+      <input type="text" class="si-i" id="si" placeholder="Pseudo du joueur...">
+      <button class="si-b" onclick="doSearch()">Chercher</button>
+    </div>
+    <div id="sres"></div>
+  </div>
+</div>
+</div>
+
 <script>
-const COLS=5;
-const XP_LVL=[0,50,150,300,500,1000];
-const SEASONS=[
-  {n:'Printemps',gc:'#C0DD97',sc:'#27500A',bg:'#EAF3DE',weed:1.3,water:1.2,trim:1.0},
-  {n:'Été',gc:'#A8CC70',sc:'#173404',bg:'#D4E8A0',weed:0.9,water:1.6,trim:1.0},
-  {n:'Automne',gc:'#C8BC78',sc:'#412402',bg:'#F5E8C0',weed:1.6,water:0.7,trim:1.1},
-  {n:'Hiver',gc:'#BCCABE',sc:'#042C53',bg:'#D8E8EE',weed:0.4,water:0.3,trim:0.7},
-];
-const ITEMS=[
-  {id:'flower',n:'Fleur',price:40,pres:5,lvl:1},
-  {id:'path',n:'Allée',price:25,pres:2,lvl:1},
-  {id:'bush',n:'Arbuste',price:80,pres:10,lvl:1},
-  {id:'statue',n:'Statue',price:150,pres:20,lvl:2},
-  {id:'pond',n:'Bassin',price:220,pres:30,lvl:3},
-  {id:'rosier',n:'Rosier grimpant',price:120,pres:15,lvl:4},
-  {id:'fontaine',n:'Fontaine',price:350,pres:45,lvl:5},
-];
-const PARCELS=[
-  {price:200,n:'Rang Nord — 5 cases'},
-  {price:400,n:'Rang Centre — 5 cases'},
-  {price:800,n:'Grand Terrain — 5 cases'},
-];
-const TR={water:8,weed:6,trim:10};
-const TX={water:5,weed:4,trim:6};
-const TL={water:'Arroser',weed:'Désherber',trim:'Tailler'};
-const TC={water:'tw',weed:'td',trim:'tt'};
-const BGCLS={flower:'tf',bush:'tb',statue:'ts',pond:'tp',path:'ta',rosier:'tro',fontaine:'tfo'};
-
-let G={coins:60,day:1,xp:0,level:1,sel:null,season:0,weather:'clear',unlockedRows:2,
-  grid:Array.from({length:25},()=>({type:'grass',task:null}))};
-
-function svgOf(t,sz){
-  sz=sz||36;
-  const o=`<svg width="${sz}" height="${sz}" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">`;
-  const S={
-    grass:o+`<rect x="9" y="13" width="5" height="18" rx="2.5" fill="#3B6D11"/><rect x="16" y="9" width="5" height="22" rx="2.5" fill="#27500A"/><rect x="23" y="13" width="5" height="18" rx="2.5" fill="#3B6D11"/></svg>`,
-    flower:o+`<rect x="16" y="22" width="4" height="10" rx="2" fill="#3B6D11"/><circle cx="18" cy="15" r="9" fill="#ED93B1"/><circle cx="18" cy="15" r="5" fill="#FAC775"/><circle cx="18" cy="15" r="2.5" fill="#D85A30"/></svg>`,
-    bush:o+`<ellipse cx="18" cy="25" rx="14" ry="8" fill="#27500A"/><ellipse cx="11" cy="19" rx="9" ry="8" fill="#3B6D11"/><ellipse cx="25" cy="19" rx="9" ry="8" fill="#3B6D11"/><ellipse cx="18" cy="14" rx="10" ry="9" fill="#639922"/></svg>`,
-    statue:o+`<rect x="10" y="28" width="16" height="5" rx="1" fill="#888780"/><rect x="14" y="11" width="8" height="19" rx="2" fill="#B4B2A9"/><circle cx="18" cy="9" r="6" fill="#888780"/><circle cx="18" cy="9" r="3.5" fill="#D3D1C7"/></svg>`,
-    pond:o+`<ellipse cx="18" cy="24" rx="15" ry="10" fill="#185FA5"/><ellipse cx="18" cy="24" rx="11" ry="7" fill="#378ADD"/><ellipse cx="14" cy="21" rx="4" ry="2.5" fill="#85B7EB"/><ellipse cx="23" cy="25" rx="3" ry="2" fill="#B5D4F4"/></svg>`,
-    path:o+`<rect x="4" y="4" width="13" height="13" rx="3" fill="#888780"/><rect x="19" y="4" width="13" height="13" rx="3" fill="#B4B2A9"/><rect x="4" y="19" width="13" height="13" rx="3" fill="#B4B2A9"/><rect x="19" y="19" width="13" height="13" rx="3" fill="#888780"/></svg>`,
-    rosier:o+`<ellipse cx="18" cy="25" rx="14" ry="7" fill="#27500A"/><ellipse cx="11" cy="19" rx="8" ry="7" fill="#3B6D11"/><ellipse cx="25" cy="19" rx="8" ry="7" fill="#3B6D11"/><ellipse cx="18" cy="14" rx="9" ry="8" fill="#639922"/><circle cx="12" cy="12" r="4" fill="#D4537E"/><circle cx="12" cy="12" r="2" fill="#F4C0D1"/><circle cx="23" cy="14" r="3.5" fill="#D4537E"/><circle cx="23" cy="14" r="1.8" fill="#F4C0D1"/><circle cx="17" cy="8" r="3.5" fill="#D4537E"/><circle cx="17" cy="8" r="1.8" fill="#F4C0D1"/></svg>`,
-    fontaine:o+`<ellipse cx="18" cy="28" rx="13" ry="6" fill="#185FA5"/><rect x="15" y="16" width="6" height="14" rx="3" fill="#B4B2A9"/><rect x="8" y="16" width="20" height="5" rx="2.5" fill="#888780"/><path d="M14 16 Q10 6 18 4 Q26 6 22 16" fill="none" stroke="#85B7EB" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="18" cy="28" rx="9" ry="4" fill="#378ADD"/></svg>`,
-    lock:o+`<rect x="8" y="16" width="20" height="13" rx="3" fill="#888780"/><path d="M12 16V12C12 7.5 24 7.5 24 12V16" stroke="#5F5E5A" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="18" cy="23" r="2.5" fill="#D3D1C7"/></svg>`,
-  };
-  return S[t]||S.grass;
-}
-
-function calcPres(){return G.grid.reduce((s,c)=>{const it=ITEMS.find(i=>i.id===c.type);return s+(it?it.pres:0);},0);}
-function getRating(p){return p>=80?'Maître':p>=50?'Expert':p>=25?'Passionné':p>=10?'Amateur':'Débutant';}
-function getRatingStyle(r){const m={Maître:['#FAEEDA','#412402'],Expert:['#E6F1FB','#042C53'],Passionné:['#FBEAF0','#4B1528'],Amateur:['#EAF3DE','#173404'],Débutant:['#EAF3DE','#27500A']};return m[r]||m['Débutant'];}
-function taskCount(){return G.grid.slice(0,G.unlockedRows*COLS).filter(c=>c.task).length;}
-
-function addXP(n){
-  const prev=G.level;
-  G.xp+=n;
-  while(G.level<XP_LVL.length&&G.xp>=XP_LVL[G.level])G.level++;
-  if(G.level>prev){
-    const b=document.getElementById('lvlbanner');
-    b.textContent='Niveau '+G.level+' atteint ! De nouveaux éléments sont disponibles en boutique.';
-    b.classList.remove('show');void b.offsetWidth;b.classList.add('show');
-    setTimeout(()=>b.classList.remove('show'),3800);
-  }
-}
-
-function genTasks(){
-  const s=SEASONS[G.season];
-  G.grid.forEach((c,i)=>{
-    if(i>=G.unlockedRows*COLS){c.task=null;return;}
-    c.task=null;
-    const r=Math.random();
-    if(c.type==='grass'){if(r<0.32*s.weed)c.task='weed';}
-    else if(c.type==='flower'){if(r<0.55*s.water)c.task='water';else if(r<0.65)c.task='weed';}
-    else if(c.type==='bush'){if(r<0.45*s.trim)c.task='trim';}
-    else if(c.type==='rosier'){
-      if(r<0.4*s.water)c.task='water';
-      else if(r<0.6*s.trim)c.task='trim';
-      else if(r<0.66)c.task='weed';
-    }
-  });
-  const active=G.grid.slice(0,G.unlockedRows*COLS);
-  if(!active.some(c=>c.task)){
-    const gi=active.reduce((a,c,i)=>c.type==='grass'?[...a,i]:a,[]);
-    if(gi.length)G.grid[gi[Math.floor(Math.random()*gi.length)]].task='weed';
-  }
-}
-
-function rollWeather(){
-  G.weather=Math.random()<0.22?'rain':'clear';
-  if(G.weather==='rain'){
-    let cnt=0;
-    G.grid.slice(0,G.unlockedRows*COLS).forEach(c=>{if(c.task==='water'){c.task=null;G.coins+=3;cnt++;}});
-    return cnt;
-  }
-  return 0;
-}
-
-function cellClick(i){
-  if(i>=G.unlockedRows*COLS){setLog('Parcelle verrouillée — achetez-la ci-dessous pour l\'étendre.');return;}
-  const c=G.grid[i];
-  if(G.sel){
-    if(c.type==='grass'){
-      const it=ITEMS.find(x=>x.id===G.sel);
-      G.coins-=it.price;c.type=G.sel;c.task=null;
-      addXP(10);G.sel=null;
-      const p=calcPres();
-      setLog('Placé : '+it.n+' · Prestige : '+p+'/100 · +10 XP');
-      if(p>=100)setLog('Prestige 100 atteint — vous êtes Maître Jardinier ! Le jardin continue...');
-      render();
-    }else setLog('Cliquez sur une case de gazon pour placer cet élément.');
-    return;
-  }
-  if(c.task){
-    const r=TR[c.task],t=TL[c.task],x=TX[c.task];
-    G.coins+=r;
-    const gEl=document.getElementById('garden');
-    const el=gEl.children[i];
-    if(el){const p=document.createElement('div');p.className='cpop';p.textContent='+'+r;el.appendChild(p);setTimeout(()=>p&&p.remove(),800);}
-    addXP(x);c.task=null;
-    setLog(t+' · +'+r+' pièces · +'+x+' XP');
-    render();
-  }
-}
-
-function buyParcel(idx){
-  const par=PARCELS[idx];
-  if(G.coins<par.price||G.unlockedRows!==idx+2)return;
-  G.coins-=par.price;G.unlockedRows=idx+3;
-  addXP(20);
-  setLog('Parcelle achetée ! '+(G.unlockedRows*COLS)+' cases disponibles. +20 XP');
-  genTasks();render();
-}
-
-function cancelSel(){G.sel=null;setLog('Placement annulé.');render();}
-
-function nextDay(){
-  const rem=taskCount();
-  const pres=calcPres();
-  const vis=Math.floor(pres/8);
-  const msgs=[];
-  if(rem===0&&G.day>1){G.coins+=15;msgs.push('Journée parfaite +15');}
-  else if(rem>0){msgs.push(rem+' tâche(s) manquée(s)');}
-  if(vis>0){G.coins+=vis;msgs.push(vis+' pièces visiteurs');}
-  const prevSeason=G.season;
-  G.day++;
-  G.season=Math.floor((G.day-1)/5)%4;
-  if(G.season!==prevSeason)msgs.push('Nouvelle saison : '+SEASONS[G.season].n);
-  const rainCnt=rollWeather();
-  if(rainCnt>0)msgs.push('Pluie — '+rainCnt+' plante(s) arrosée(s) auto');
-  genTasks();
-  setLog('Jour '+G.day+' · '+taskCount()+' tâche(s). '+(msgs.join(' · ')||'Bonne journée !'));
-  render();
-}
-
-function setLog(m){const el=document.getElementById('log');if(el)el.textContent=m;}
-
-function render(){
-  const s=SEASONS[G.season];
-
-  document.getElementById('meta').innerHTML=
-    `<span class="sbadge" style="background:${s.bg};color:${s.sc};">${s.n}</span>`+
-    `<span class="sbadge" style="background:${G.weather==='rain'?'#B5D4F4':'#FAEEDA'};color:${G.weather==='rain'?'#0C447C':'#633806'};">${G.weather==='rain'?'Pluie':'Ensoleillé'}</span>`;
-
-  const gEl=document.getElementById('garden');
-  gEl.innerHTML='';
-  for(let i=0;i<G.unlockedRows*COLS;i++){
-    const c=G.grid[i];
-    const bg=BGCLS[c.type]||'';
-    const d=document.createElement('div');
-    d.className='cell'+(bg?' '+bg:'')+(G.sel&&c.type==='grass'?' can-place':'');
-    if(c.type==='grass')d.style.background=s.gc;
-    d.innerHTML=svgOf(c.type);
-    if(G.weather==='rain'&&c.type!=='grass'){
-      const rd=document.createElement('div');
-      rd.className='raindrop';rd.style.left=(10+Math.random()*44)+'px';rd.style.top=(Math.random()*20)+'px';
-      rd.style.animationDelay=(Math.random()*0.6)+'s';d.appendChild(rd);
-    }
-    if(c.task){
-      const b=document.createElement('div');b.className='tbadge '+TC[c.task];b.textContent=TL[c.task];d.appendChild(b);
-    }
-    d.addEventListener('click',()=>cellClick(i));
-    gEl.appendChild(d);
-  }
-
-  const parEl=document.getElementById('parcels');
-  parEl.innerHTML='';
-  PARCELS.forEach((par,i)=>{
-    if(G.unlockedRows>=i+3)return;
-    const avail=G.unlockedRows===i+2;
-    const canAff=G.coins>=par.price&&avail;
-    const div=document.createElement('div');div.className='par-row';
-    const cells=Array.from({length:5},()=>`<div class="par-cell">${svgOf('lock',13)}</div>`).join('');
-    div.innerHTML=`<div class="par-cells">${cells}</div>`+
-      `<div class="par-info"><div class="par-name">${par.n}</div>`+
-      `<div class="par-price">${avail?par.price+' pièces':'Déverrouillez le rang précédent d\'abord'}</div></div>`+
-      `<button class="pbtn" ${canAff?'':'disabled'} onclick="buyParcel(${i})">${avail?'Acheter':'Verr.'}</button>`;
-    parEl.appendChild(div);
-  });
-
-  document.getElementById('stats').innerHTML=
-    `<div class="stat"><div class="slbl">Pièces</div><div class="sval">${G.coins}</div></div>`+
-    `<div class="stat"><div class="slbl">Jour</div><div class="sval">${G.day}</div></div>`+
-    `<div class="stat"><div class="slbl">Cases</div><div class="sval">${G.unlockedRows*COLS}</div></div>`;
-
-  const pres=calcPres();
-  document.getElementById('pbar').style.width=Math.min(100,pres)+'%';
-  document.getElementById('vPres').textContent=pres+'/100';
-  const rating=getRating(pres);
-  const rs=getRatingStyle(rating);
-  const rv=document.getElementById('vRating');
-  rv.textContent=rating;rv.style.background=rs[0];rv.style.color=rs[1];
-
-  const xpCurr=XP_LVL[G.level-1]||0;
-  const xpNext=G.level<XP_LVL.length?XP_LVL[G.level]:XP_LVL[XP_LVL.length-1];
-  const maxed=G.level>=XP_LVL.length;
-  const xpPct=maxed?100:Math.round(((G.xp-xpCurr)/(xpNext-xpCurr))*100);
-  document.getElementById('xbar').style.width=xpPct+'%';
-  document.getElementById('vLvl').textContent='Niv. '+G.level+(maxed?' MAX':'');
-  document.getElementById('vXP').textContent=maxed?'Maître Jardinier':(G.xp-xpCurr)+'/'+(xpNext-xpCurr)+' XP';
-
-  const sh=document.getElementById('shop');
-  sh.innerHTML='';
-  ITEMS.forEach(it=>{
-    const locked=G.level<it.lvl;
-    const canAff=!locked&&G.coins>=it.price;
-    const d=document.createElement('div');
-    d.className='sitem'+(G.sel===it.id?' active':'')+((!canAff&&!locked)?' dis':'')+(locked?' lck':'');
-    const lvlTag=it.lvl>1?`<span class="ilvl">Niv.${it.lvl}</span>`:'';
-    d.innerHTML=`<div style="width:26px;height:26px;flex-shrink:0;">${svgOf(it.id,26)}</div>`+
-      `<div style="flex:1;"><div class="iname">${it.n}${locked?`<span class="ilvl">Niv.${it.lvl}</span>`:lvlTag}</div>`+
-      `<div class="iprice">${locked?'Niveau '+it.lvl+' requis':it.price+' pièces · +'+it.pres+' prestige'}</div></div>`;
-    if(canAff)d.addEventListener('click',()=>{G.sel=G.sel===it.id?null:it.id;if(G.sel)setLog('Sélectionné : '+it.n+' · Cliquez une case de gazon.');render();});
-    sh.appendChild(d);
-  });
-  document.getElementById('cancelBtn').style.display=G.sel?'block':'none';
-}
-
-G.grid=Array.from({length:25},()=>({type:'grass',task:null}));
-genTasks();render();
-setLog('Jour 1 · Printemps · Cliquez les badges pour gagner pièces & XP · Achetez des décorations · Débloquez de nouvelles parcelles !');
-</script>
+const SVGS={
+grass:`<rect x="9" y="13" width="5" height="20" rx="2.5" fill="#3B6D11"/><rect x="17" y="9" width="5" height="24" rx="2.5" fill="#27500A"/><rect x="25" y="13" width="5" height="20" rx="2.5" fill="#3B6D11"/>`,
+fleur:`<rect x="18" y="23" width="4" height="13" rx="2" fill="#3B6D11"/><ellipse cx="11" cy="17" rx="6" ry="4" fill="#ED93B1"/><ellipse cx="29" cy="17" rx="6" ry="4" fill="#ED93B1"/><ellipse cx="20" cy="11" rx="4" ry="6" fill="#ED93B1"/><ellipse cx="20" cy="23" rx="4" ry="6" fill="#ED93B1"/><circle cx="20" cy="17" r="5" fill="#FAC775"/><circle cx="20" cy="17" r="2.5" fill="#D85A30"/>`,
+tulipe:`<rect x="18" y="27" width="4" height="10" rx="2" fill="#3B6D11"/><path d="M20 27Q13 23 13 14Q13 6 20 5Q27 6 27 14Q27 23 20 27Z" fill="#D85A30"/><path d="M20 27Q15 21 15 13Q15 8 20 7" fill="#F09595"/>`,
+lavande:`<rect x="18" y="27" width="4" height="10" rx="2" fill="#3B6D11"/><ellipse cx="12" cy="26" rx="3" ry="7" fill="#3B6D11" transform="rotate(-30 12 26)"/><ellipse cx="28" cy="26" rx="3" ry="7" fill="#3B6D11" transform="rotate(30 28 26)"/><rect x="18" y="7" width="4" height="20" rx="2" fill="#AFA9EC"/><circle cx="20" cy="7" r="3.5" fill="#534AB7"/><circle cx="20" cy="12" r="2.5" fill="#7F77DD"/><circle cx="20" cy="17" r="2.5" fill="#7F77DD"/><circle cx="20" cy="22" r="2" fill="#AFA9EC"/>`,
+tournesol:`<rect x="18" y="24" width="4" height="14" rx="2" fill="#27500A"/><ellipse cx="20" cy="9" rx="4" ry="7" fill="#EF9F27"/><ellipse cx="20" cy="21" rx="4" ry="7" fill="#EF9F27"/><ellipse cx="9" cy="15" rx="7" ry="4" fill="#EF9F27"/><ellipse cx="31" cy="15" rx="7" ry="4" fill="#EF9F27"/><ellipse cx="13" cy="9" rx="4" ry="6" fill="#EF9F27" transform="rotate(-45 13 9)"/><ellipse cx="27" cy="9" rx="4" ry="6" fill="#EF9F27" transform="rotate(45 27 9)"/><ellipse cx="27" cy="21" rx="4" ry="6" fill="#EF9F27" transform="rotate(-45 27 21)"/><ellipse cx="13" cy="21" rx="4" ry="6" fill="#EF9F27" transform="rotate(45 13 21)"/><circle cx="20" cy="15" r="7" fill="#633806"/><circle cx="20" cy="15" r="4" fill="#412402"/>`,
+pivoine:`<rect x="18" y="25" width="4" height="12" rx="2" fill="#3B6D11"/><ellipse cx="14" cy="28" rx="3" ry="6" fill="#3B6D11" transform="rotate(-25 14 28)"/><circle cx="20" cy="16" r="13" fill="#F4C0D1"/><circle cx="20" cy="16" r="10" fill="#ED93B1"/><circle cx="20" cy="16" r="7" fill="#D4537E"/><circle cx="20" cy="16" r="4" fill="#993556"/><circle cx="20" cy="16" r="2" fill="#FAC775"/>`,
+iris:`<rect x="18" y="26" width="4" height="12" rx="2" fill="#3B6D11"/><ellipse cx="13" cy="28" rx="3" ry="7" fill="#3B6D11" transform="rotate(-20 13 28)"/><path d="M20 26Q10 20 10 12Q10 4 20 5Q30 4 30 12Q30 20 20 26Z" fill="#7F77DD"/><path d="M20 26Q13 19 13 12Q13 7 20 8" fill="#AFA9EC"/><circle cx="20" cy="10" r="3" fill="#FAC775"/>`,
+coquelicot:`<rect x="18" y="26" width="4" height="12" rx="2" fill="#3B6D11"/><ellipse cx="12" cy="29" rx="3" ry="6" fill="#3B6D11" transform="rotate(-20 12 29)"/><ellipse cx="28" cy="29" rx="3" ry="6" fill="#3B6D11" transform="rotate(20 28 29)"/><circle cx="14" cy="15" r="8" fill="#E24B4A"/><circle cx="26" cy="15" r="8" fill="#D85A30"/><circle cx="14" cy="15" r="4" fill="#993C1D"/><circle cx="26" cy="15" r="4" fill="#993C1D"/><circle cx="20" cy="16" r="5" fill="#E24B4A"/><circle cx="20" cy="12" r="4" fill="#444441"/>`,
+arbuste:`<ellipse cx="20" cy="27" rx="15" ry="9" fill="#27500A"/><ellipse cx="12" cy="20" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="28" cy="20" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="20" cy="14" rx="11" ry="10" fill="#639922"/>`,
+rosier:`<ellipse cx="20" cy="27" rx="15" ry="9" fill="#27500A"/><ellipse cx="12" cy="20" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="28" cy="20" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="20" cy="14" rx="11" ry="10" fill="#639922"/><circle cx="12" cy="13" r="4.5" fill="#993556"/><circle cx="12" cy="13" r="2.5" fill="#D4537E"/><circle cx="28" cy="14" r="4" fill="#993556"/><circle cx="28" cy="14" r="2" fill="#D4537E"/><circle cx="20" cy="8" r="4" fill="#993556"/><circle cx="20" cy="8" r="2" fill="#D4537E"/>`,
+bambou:`<rect x="8" y="5" width="5" height="30" rx="2.5" fill="#3B6D11"/><rect x="17" y="3" width="5" height="32" rx="2.5" fill="#27500A"/><rect x="26" y="7" width="5" height="28" rx="2.5" fill="#3B6D11"/><rect x="8" y="13" width="5" height="2" rx="1" fill="#27500A"/><rect x="8" y="22" width="5" height="2" rx="1" fill="#27500A"/><rect x="17" y="10" width="5" height="2" rx="1" fill="#173404"/><rect x="17" y="20" width="5" height="2" rx="1" fill="#173404"/><rect x="17" y="30" width="5" height="2" rx="1" fill="#173404"/><rect x="26" y="16" width="5" height="2" rx="1" fill="#27500A"/><rect x="26" y="26" width="5" height="2" rx="1" fill="#27500A"/><ellipse cx="10" cy="11" rx="7" ry="3" fill="#639922" transform="rotate(-20 10 11)"/><ellipse cx="20" cy="8" rx="7" ry="3" fill="#639922"/><ellipse cx="30" cy="14" rx="7" ry="3" fill="#639922" transform="rotate(20 30 14)"/>`,
+cerisier:`<rect x="17" y="25" width="6" height="12" rx="3" fill="#712B13"/><rect x="14" y="21" width="3" height="7" rx="1.5" fill="#993C1D"/><rect x="23" y="19" width="3" height="9" rx="1.5" fill="#993C1D"/><ellipse cx="20" cy="16" rx="15" ry="12" fill="#F4C0D1"/><ellipse cx="12" cy="18" rx="8" ry="7" fill="#F4C0D1"/><ellipse cx="28" cy="18" rx="8" ry="7" fill="#F4C0D1"/><ellipse cx="20" cy="12" rx="12" ry="9" fill="#ED93B1"/><circle cx="15" cy="11" r="2" fill="#D4537E"/><circle cx="23" cy="9" r="1.5" fill="#D4537E"/><circle cx="28" cy="13" r="2" fill="#D4537E"/>`,
+sapin:`<rect x="17" y="31" width="6" height="7" rx="2" fill="#633806"/><polygon points="20,4 30,20 10,20" fill="#173404"/><polygon points="20,11 32,27 8,27" fill="#27500A"/><polygon points="20,18 33,33 7,33" fill="#3B6D11"/><circle cx="13" cy="17" r="1.8" fill="#D85A30"/><circle cx="25" cy="24" r="1.8" fill="#FAC775"/><circle cx="17" cy="26" r="1.5" fill="#D4537E"/><circle cx="21" cy="4" r="2.5" fill="#EF9F27"/>`,
+palmier:`<rect x="17" y="21" width="6" height="17" rx="3" fill="#BA7517"/><rect x="16" y="25" width="8" height="2" rx="1" fill="#854F0B"/><rect x="16" y="29" width="8" height="2" rx="1" fill="#854F0B"/><rect x="16" y="33" width="8" height="2" rx="1" fill="#854F0B"/><ellipse cx="9" cy="16" rx="11" ry="4" fill="#27500A" transform="rotate(-20 9 16)"/><ellipse cx="31" cy="14" rx="11" ry="4" fill="#27500A" transform="rotate(20 31 14)"/><ellipse cx="12" cy="10" rx="10" ry="3.5" fill="#3B6D11" transform="rotate(-40 12 10)"/><ellipse cx="28" cy="10" rx="10" ry="3.5" fill="#3B6D11" transform="rotate(40 28 10)"/><ellipse cx="20" cy="9" rx="8" ry="3" fill="#639922"/>`,
+bonsai:`<ellipse cx="20" cy="34" rx="13" ry="5" fill="#B4B2A9"/><rect x="18" y="22" width="4" height="13" rx="2" fill="#633806"/><rect x="10" y="15" width="3" height="8" rx="1.5" fill="#854F0B" transform="rotate(-20 10 15)"/><rect x="27" y="16" width="3" height="7" rx="1.5" fill="#854F0B" transform="rotate(15 27 16)"/><ellipse cx="13" cy="13" rx="8" ry="7" fill="#3B6D11"/><ellipse cx="27" cy="14" rx="7" ry="6" fill="#3B6D11"/><ellipse cx="20" cy="10" rx="10" ry="7" fill="#639922"/><circle cx="11" cy="10" r="2" fill="#D4537E"/><circle cx="27" cy="11" r="2" fill="#D4537E"/><circle cx="20" cy="7" r="2" fill="#F4C0D1"/>`,
+haie:`<rect x="2" y="17" width="36" height="19" rx="3" fill="#27500A"/><ellipse cx="8" cy="17" rx="8" ry="8" fill="#3B6D11"/><ellipse cx="20" cy="15" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="32" cy="17" rx="8" ry="8" fill="#3B6D11"/><ellipse cx="14" cy="12" rx="6" ry="6" fill="#639922"/><ellipse cx="26" cy="12" rx="6" ry="6" fill="#639922"/>`,
+allee:`<rect x="2" y="2" width="17" height="17" rx="3" fill="#888780"/><rect x="21" y="2" width="17" height="17" rx="3" fill="#B4B2A9"/><rect x="2" y="21" width="17" height="17" rx="3" fill="#B4B2A9"/><rect x="21" y="21" width="17" height="17" rx="3" fill="#888780"/>`,
+lanterne:`<rect x="18" y="31" width="4" height="7" rx="1" fill="#888780"/><rect x="13" y="28" width="14" height="4" rx="1" fill="#5F5E5A"/><rect x="13" y="16" width="14" height="13" rx="2" fill="#B4B2A9"/><rect x="14" y="17" width="12" height="11" rx="1" fill="#FAEEDA"/><rect x="11" y="14" width="18" height="3" rx="1" fill="#5F5E5A"/><polygon points="20,7 29,14 11,14" fill="#444441"/><circle cx="20" cy="22" r="3.5" fill="#EF9F27"/>`,
+banc:`<rect x="4" y="17" width="32" height="5" rx="2" fill="#BA7517"/><rect x="4" y="14" width="32" height="4" rx="1" fill="#D4A850"/><rect x="5" y="21" width="4" height="12" rx="2" fill="#854F0B"/><rect x="31" y="21" width="4" height="12" rx="2" fill="#854F0B"/><rect x="4" y="9" width="4" height="10" rx="2" fill="#854F0B"/><rect x="32" y="9" width="4" height="10" rx="2" fill="#854F0B"/><rect x="4" y="9" width="32" height="4" rx="2" fill="#BA7517"/>`,
+statue:`<rect x="10" y="32" width="20" height="5" rx="1" fill="#888780"/><rect x="14" y="12" width="12" height="21" rx="2" fill="#B4B2A9"/><circle cx="20" cy="10" r="7" fill="#888780"/><circle cx="20" cy="10" r="4" fill="#D3D1C7"/><rect x="17" y="16" width="6" height="10" rx="1" fill="#D3D1C7"/><ellipse cx="15" cy="22" rx="4" ry="3" fill="#B4B2A9" transform="rotate(-20 15 22)"/><ellipse cx="25" cy="22" rx="4" ry="3" fill="#B4B2A9" transform="rotate(20 25 22)"/>`,
+bassin:`<ellipse cx="20" cy="27" rx="17" ry="11" fill="#185FA5"/><ellipse cx="20" cy="27" rx="13" ry="8" fill="#378ADD"/><ellipse cx="13" cy="24" rx="4" ry="3" fill="#85B7EB"/><circle cx="11" cy="28" r="3" fill="#3B6D11"/><circle cx=
