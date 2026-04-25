@@ -1,402 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Jardin</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-#g{font-family:var(--font-sans);padding:.5rem;max-width:460px;margin:0 auto}
-.sr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:5px}
-.sc{background:var(--color-background-secondary);border-radius:8px;padding:5px 3px;text-align:center}
-.sl{font-size:8px;color:var(--color-text-tertiary);display:block}.sv{font-size:15px;font-weight:500;color:var(--color-text-primary)}
-.bdgr{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px}
-.bk{font-size:9.5px;font-weight:500;padding:3px 8px;border-radius:9px}
-.brw{display:flex;justify-content:space-between;font-size:8px;color:var(--color-text-tertiary);margin-bottom:2px}
-.bgg{background:var(--color-background-secondary);height:5px;border-radius:3px;overflow:hidden;margin-bottom:5px}
-.gf{height:100%;background:#639922;border-radius:3px;transition:width .4s}
-.xf{height:100%;background:#7F77DD;border-radius:3px;transition:width .4s}
-#vp{overflow:hidden;touch-action:none;user-select:none;border-radius:8px;margin-bottom:5px;position:relative;cursor:grab;background:var(--color-background-secondary)}
-#vp:active{cursor:grabbing}
-#grd{display:grid;will-change:transform;position:relative}
-.cel{position:relative;display:flex;align-items:center;justify-content:center;border-radius:5px;overflow:hidden;-webkit-tap-highlight-color:transparent;cursor:pointer}
-.cel.cp{outline:2.5px solid #639922;outline-offset:-2px;cursor:crosshair !important}
-.cel.vd{background:#1a1a17 !important;cursor:default;opacity:.18}
-.cel.wl{background:#C8A050 !important}
-.cel.wl svg{opacity:.7}
-@keyframes ri{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-28px)}}
-.pp{position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:500;pointer-events:none;animation:ri .7s ease-out forwards;z-index:10;white-space:nowrap}
-.tb{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);font-size:6.5px;font-weight:500;padding:1.5px 4px;border-radius:5px;white-space:nowrap;pointer-events:none;max-width:95%;overflow:hidden}
-.bw{background:#B5D4F4;color:#0C447C}.bd{background:#FAC775;color:#633806}.bt{background:#C0DD97;color:#27500A}.bu{background:#F7C1C1;color:#791F1F}
-.ned{display:grid;grid-template-columns:1fr 1.6fr 1fr;grid-template-rows:auto auto auto;gap:3px;margin-bottom:5px}
-.eb{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:7px;padding:7px 4px;font-size:9px;font-weight:500;color:var(--color-text-tertiary);cursor:pointer;font-family:var(--font-sans);-webkit-tap-highlight-color:transparent;text-align:center;line-height:1.4}
-.eb.af{color:#854F0B;border-color:#BA7517;background:#FAEEDA}.eb:disabled{opacity:.2;cursor:not-allowed}
-.ebmi{background:var(--color-background-secondary);border-radius:7px;padding:5px 3px;text-align:center;font-size:9px;color:var(--color-text-tertiary);line-height:1.5}
-.ebarr{font-size:16px;line-height:1}
-.flts{display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:4px 0;padding-bottom:1px}
-.ft{background:transparent;border:0.5px solid var(--color-border-tertiary);border-radius:13px;padding:5px 11px;font-size:10px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-sans);white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.ft.on{background:#EAF3DE;border-color:#639922;color:#27500A}
-.shp{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:5px}
-.si{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:5px 3px 4px;cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent}
-.si.sel{border:2px solid #639922;background:#EAF3DE}
-.si.lk{opacity:.2;cursor:not-allowed}.si.ds{opacity:.32;cursor:not-allowed}
-.si:active:not(.lk):not(.ds){transform:scale(.88)}
-.sn{font-size:9px;font-weight:500;color:var(--color-text-primary);margin-top:2px;line-height:1.2}
-.sp{font-size:8.5px;color:#854F0B;font-weight:500}.ss{font-size:7.5px;color:var(--color-text-tertiary)}
-.slv{font-size:7px;font-weight:500;background:#EEEDFE;color:#534AB7;padding:1px 4px;border-radius:4px;display:inline-block;margin-top:1px}
-.acts{display:flex;gap:5px;margin-top:5px}
-.btn{flex:1;background:transparent;border:0.5px solid var(--color-border-secondary);border-radius:8px;padding:13px 6px;font-size:12px;font-weight:500;color:var(--color-text-primary);cursor:pointer;font-family:var(--font-sans);-webkit-tap-highlight-color:transparent}
-.btn:active{opacity:.65}.btng{background:#639922;border-color:#3B6D11;color:#EAF3DE}
-.log{background:var(--color-background-secondary);border-radius:8px;padding:7px 9px;font-size:10.5px;color:var(--color-text-secondary);line-height:1.5;margin-top:5px}
-.wbox{background:#FCEBEB;border:0.5px solid #F09595;border-radius:8px;padding:6px 9px;font-size:10.5px;color:#791F1F;font-weight:500;margin-top:5px;display:none}
-@keyframes bp{0%{opacity:0;transform:translateY(-4px)}100%{opacity:1;transform:translateY(0)}}
-#bnr{background:#EEEDFE;border:0.5px solid #AFA9EC;border-radius:8px;padding:7px 10px;font-size:11px;color:#3C3489;font-weight:500;text-align:center;margin-bottom:5px;display:none;animation:bp .35s ease}
-.earrow{position:absolute;pointer-events:none;z-index:6;background:rgba(0,0,0,.22);color:#fff;font-size:13px;font-weight:500;border-radius:4px;padding:5px 4px;line-height:1}
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:#eef3e6;
+  overflow:hidden;
+}
+
+/* HUD */
+#topbar{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:55px;
+  background:#ffffff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 10px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  z-index:10;
+}
+
+#menuBtn{
+  font-size:22px;
+  cursor:pointer;
+}
+
+#nextDay{
+  background:#639922;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* Sidebar */
+#sidebar{
+  position:fixed;
+  top:0;
+  left:-250px;
+  width:250px;
+  height:100%;
+  background:white;
+  transition:0.3s;
+  padding:10px;
+  overflow:auto;
+  z-index:20;
+}
+
+#sidebar.open{
+  left:0;
+}
+
+/* Jardin */
+#game{
+  position:absolute;
+  top:55px;
+  bottom:0;
+  left:0;
+  right:0;
+  overflow:hidden;
+}
+
+#grid{
+  position:absolute;
+  display:grid;
+  grid-template-columns:repeat(10,60px);
+  gap:4px;
+  transform-origin:0 0;
+}
+
+.cell{
+  width:60px;
+  height:60px;
+  background:#97C459;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:20px;
+}
+
+.cell.plant{
+  background:#fbeaf0;
+}
+
+/* Shop items */
+.item{
+  padding:10px;
+  border:1px solid #ccc;
+  margin-bottom:5px;
+  border-radius:6px;
+  cursor:pointer;
+}
 </style>
-<h2 class="sr-only">Bloom v4 — jardin tycoon avec expansion 4 directions, navigation par glissement et punitions</h2>
-<div id="g">
-  <div id="bnr"></div>
-  <div id="wbox" class="wbox"></div>
-  <div class="sr" id="sr"></div>
-  <div class="bdgr" id="bdgr"></div>
-  <div id="bars"></div>
-  <div id="vp">
-    <div id="grd"></div>
-    <div id="ea" class="earrow" style="left:2px;top:50%;transform:translateY(-50%);display:none">‹</div>
-    <div id="ee" class="earrow" style="right:2px;top:50%;transform:translateY(-50%);display:none">›</div>
-    <div id="en" class="earrow" style="top:2px;left:50%;transform:translateX(-50%);display:none;padding:3px 8px">∧</div>
-    <div id="es" class="earrow" style="bottom:2px;left:50%;transform:translateX(-50%);display:none;padding:3px 8px">∨</div>
-  </div>
-  <div class="ned" id="ned"></div>
-  <div class="flts" id="flts"></div>
-  <div class="shp" id="shp"></div>
-  <div class="acts">
-    <button class="btn btng" onclick="nextDay()">Jour suivant →</button>
-    <button class="btn" id="cbtn" style="display:none" onclick="cancelSel()">✕ Annuler</button>
-  </div>
-  <div class="log" id="log">Bienvenue ! Tapez les badges colorés pour faire les tâches. Glissez le jardin pour naviguer. Les plantes non entretenues flétrissent puis meurent !</div>
+</head>
+
+<body>
+
+<div id="topbar">
+  <div id="menuBtn">☰</div>
+  <div id="stats">💰 0</div>
+  <button id="nextDay">Jour ➜</button>
 </div>
+
+<div id="sidebar"></div>
+
+<div id="game">
+  <div id="grid"></div>
+</div>
+
 <script>
-const VW=5,VH=6;
-const gEl=document.getElementById('g');
-const vpEl=document.getElementById('vp');
-const grdEl=document.getElementById('grd');
-const CS=Math.min(76,Math.max(52,Math.floor((Math.min(460,gEl.clientWidth||360)-8)/VW)));
-vpEl.style.width=(VW*CS)+'px';vpEl.style.height=(VH*CS)+'px';
-grdEl.style.gridTemplateColumns=`repeat(${VW},${CS}px)`;
 
-const S={
-grass:`<rect x="9" y="12" width="5" height="21" rx="2.5" fill="#3B6D11"/><rect x="17" y="8" width="5" height="25" rx="2.5" fill="#27500A"/><rect x="25" y="12" width="5" height="21" rx="2.5" fill="#3B6D11"/>`,
-fleur:`<rect x="18" y="23" width="4" height="13" rx="2" fill="#3B6D11"/><ellipse cx="11" cy="17" rx="6" ry="4" fill="#ED93B1"/><ellipse cx="29" cy="17" rx="6" ry="4" fill="#ED93B1"/><ellipse cx="20" cy="11" rx="4" ry="6" fill="#ED93B1"/><ellipse cx="20" cy="23" rx="4" ry="6" fill="#ED93B1"/><circle cx="20" cy="17" r="5" fill="#FAC775"/><circle cx="20" cy="17" r="2.5" fill="#D85A30"/>`,
-tulipe:`<rect x="18" y="27" width="4" height="10" rx="2" fill="#3B6D11"/><path d="M20 27Q13 23 13 14Q13 6 20 5Q27 6 27 14Q27 23 20 27Z" fill="#D85A30"/><ellipse cx="20" cy="28" rx="3" ry="6" fill="#3B6D11" transform="rotate(-20 20 28)"/>`,
-lavande:`<rect x="18" y="27" width="4" height="10" rx="2" fill="#3B6D11"/><ellipse cx="12" cy="26" rx="3" ry="7" fill="#3B6D11" transform="rotate(-30 12 26)"/><ellipse cx="28" cy="26" rx="3" ry="7" fill="#3B6D11" transform="rotate(30 28 26)"/><rect x="18" y="8" width="4" height="20" rx="2" fill="#AFA9EC"/><circle cx="20" cy="8" r="3.5" fill="#534AB7"/><circle cx="20" cy="13" r="2.5" fill="#7F77DD"/><circle cx="20" cy="18" r="2.5" fill="#7F77DD"/><circle cx="20" cy="23" r="2" fill="#AFA9EC"/>`,
-tournesol:`<rect x="18" y="26" width="4" height="12" rx="2" fill="#27500A"/><ellipse cx="20" cy="9" rx="4" ry="7" fill="#EF9F27"/><ellipse cx="20" cy="21" rx="4" ry="7" fill="#EF9F27"/><ellipse cx="8" cy="15" rx="7" ry="4" fill="#EF9F27"/><ellipse cx="32" cy="15" rx="7" ry="4" fill="#EF9F27"/><circle cx="20" cy="15" r="7" fill="#633806"/><circle cx="20" cy="15" r="3.5" fill="#412402"/>`,
-pivoine:`<rect x="18" y="25" width="4" height="12" rx="2" fill="#3B6D11"/><circle cx="20" cy="16" r="13" fill="#F4C0D1"/><circle cx="20" cy="16" r="10" fill="#ED93B1"/><circle cx="20" cy="16" r="7" fill="#D4537E"/><circle cx="20" cy="16" r="4" fill="#993556"/><circle cx="20" cy="16" r="2" fill="#FAC775"/>`,
-iris:`<rect x="18" y="26" width="4" height="12" rx="2" fill="#3B6D11"/><path d="M20 26Q10 20 10 12Q10 4 20 5Q30 4 30 12Q30 20 20 26Z" fill="#7F77DD"/><path d="M20 26Q13 19 13 12Q13 7 20 8" fill="none" stroke="#AFA9EC" stroke-width="1.5"/><circle cx="20" cy="10" r="3" fill="#FAC775"/>`,
-coquelicot:`<rect x="18" y="26" width="4" height="12" rx="2" fill="#3B6D11"/><circle cx="14" cy="14" r="9" fill="#E24B4A"/><circle cx="26" cy="14" r="9" fill="#D85A30"/><circle cx="14" cy="14" r="5" fill="#993C1D"/><circle cx="26" cy="14" r="5" fill="#993C1D"/><circle cx="20" cy="11" r="4" fill="#444441"/>`,
-arbuste:`<ellipse cx="20" cy="27" rx="15" ry="9" fill="#27500A"/><ellipse cx="12" cy="20" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="28" cy="20" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="20" cy="14" rx="11" ry="10" fill="#639922"/>`,
-rosier:`<ellipse cx="20" cy="27" rx="15" ry="9" fill="#27500A"/><ellipse cx="12" cy="20" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="28" cy="20" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="20" cy="14" rx="11" ry="10" fill="#639922"/><circle cx="12" cy="12" r="4.5" fill="#993556"/><circle cx="12" cy="12" r="2.5" fill="#D4537E"/><circle cx="28" cy="13" r="4" fill="#993556"/><circle cx="28" cy="13" r="2" fill="#D4537E"/><circle cx="20" cy="8" r="4" fill="#993556"/><circle cx="20" cy="8" r="2" fill="#D4537E"/>`,
-bambou:`<rect x="8" y="5" width="5" height="30" rx="2.5" fill="#3B6D11"/><rect x="17" y="3" width="5" height="32" rx="2.5" fill="#27500A"/><rect x="26" y="7" width="5" height="28" rx="2.5" fill="#3B6D11"/><rect x="8" y="13" width="5" height="2" rx="1" fill="#27500A"/><rect x="17" y="10" width="5" height="2" rx="1" fill="#173404"/><rect x="26" y="16" width="5" height="2" rx="1" fill="#27500A"/><ellipse cx="10" cy="11" rx="7" ry="3" fill="#639922" transform="rotate(-20 10 11)"/><ellipse cx="20" cy="8" rx="7" ry="3" fill="#639922"/><ellipse cx="30" cy="14" rx="7" ry="3" fill="#639922" transform="rotate(20 30 14)"/>`,
-cerisier:`<rect x="17" y="25" width="6" height="13" rx="3" fill="#712B13"/><ellipse cx="20" cy="16" rx="15" ry="12" fill="#F4C0D1"/><ellipse cx="12" cy="18" rx="8" ry="7" fill="#F4C0D1"/><ellipse cx="28" cy="18" rx="8" ry="7" fill="#F4C0D1"/><ellipse cx="20" cy="12" rx="12" ry="9" fill="#ED93B1"/><circle cx="15" cy="11" r="2" fill="#D4537E"/><circle cx="23" cy="9" r="1.5" fill="#D4537E"/><circle cx="28" cy="13" r="2" fill="#D4537E"/>`,
-sapin:`<rect x="17" y="31" width="6" height="7" rx="2" fill="#633806"/><polygon points="20,4 30,20 10,20" fill="#173404"/><polygon points="20,11 32,27 8,27" fill="#27500A"/><polygon points="20,18 33,33 7,33" fill="#3B6D11"/><circle cx="13" cy="18" r="1.8" fill="#D85A30"/><circle cx="25" cy="24" r="1.8" fill="#FAC775"/>`,
-palmier:`<rect x="17" y="21" width="6" height="17" rx="3" fill="#BA7517"/><rect x="16" y="25" width="8" height="2" rx="1" fill="#854F0B"/><rect x="16" y="30" width="8" height="2" rx="1" fill="#854F0B"/><ellipse cx="9" cy="16" rx="11" ry="4" fill="#27500A" transform="rotate(-20 9 16)"/><ellipse cx="31" cy="14" rx="11" ry="4" fill="#27500A" transform="rotate(20 31 14)"/><ellipse cx="12" cy="10" rx="10" ry="3.5" fill="#3B6D11" transform="rotate(-40 12 10)"/><ellipse cx="28" cy="10" rx="10" ry="3.5" fill="#3B6D11" transform="rotate(40 28 10)"/><ellipse cx="20" cy="9" rx="8" ry="3" fill="#639922"/>`,
-bonsai:`<ellipse cx="20" cy="34" rx="13" ry="5" fill="#B4B2A9"/><rect x="18" y="22" width="4" height="13" rx="2" fill="#633806"/><rect x="10" y="15" width="3" height="8" rx="1.5" fill="#854F0B" transform="rotate(-20 10 15)"/><rect x="27" y="16" width="3" height="7" rx="1.5" fill="#854F0B" transform="rotate(15 27 16)"/><ellipse cx="13" cy="13" rx="8" ry="7" fill="#3B6D11"/><ellipse cx="27" cy="14" rx="7" ry="6" fill="#3B6D11"/><ellipse cx="20" cy="10" rx="10" ry="7" fill="#639922"/><circle cx="11" cy="10" r="2" fill="#D4537E"/><circle cx="27" cy="11" r="2" fill="#D4537E"/>`,
-haie:`<rect x="2" y="18" width="36" height="19" rx="3" fill="#27500A"/><ellipse cx="8" cy="18" rx="8" ry="8" fill="#3B6D11"/><ellipse cx="20" cy="16" rx="9" ry="9" fill="#3B6D11"/><ellipse cx="32" cy="18" rx="8" ry="8" fill="#3B6D11"/><ellipse cx="14" cy="12" rx="6" ry="6" fill="#639922"/><ellipse cx="26" cy="12" rx="6" ry="6" fill="#639922"/>`,
-allee:`<rect x="2" y="2" width="17" height="17" rx="3" fill="#888780"/><rect x="21" y="2" width="17" height="17" rx="3" fill="#B4B2A9"/><rect x="2" y="21" width="17" height="17" rx="3" fill="#B4B2A9"/><rect x="21" y="21" width="17" height="17" rx="3" fill="#888780"/>`,
-lanterne:`<rect x="18" y="31" width="4" height="7" rx="1" fill="#888780"/><rect x="13" y="28" width="14" height="4" rx="1" fill="#5F5E5A"/><rect x="13" y="16" width="14" height="13" rx="2" fill="#B4B2A9"/><rect x="14" y="17" width="12" height="11" rx="1" fill="#FAEEDA"/><rect x="11" y="14" width="18" height="3" rx="1" fill="#5F5E5A"/><polygon points="20,7 29,14 11,14" fill="#444441"/><circle cx="20" cy="22" r="3.5" fill="#EF9F27"/>`,
-banc:`<rect x="4" y="17" width="32" height="5" rx="2" fill="#BA7517"/><rect x="4" y="14" width="32" height="4" rx="1" fill="#D4A850"/><rect x="5" y="21" width="4" height="12" rx="2" fill="#854F0B"/><rect x="31" y="21" width="4" height="12" rx="2" fill="#854F0B"/><rect x="4" y="9" width="4" height="10" rx="2" fill="#854F0B"/><rect x="32" y="9" width="4" height="10" rx="2" fill="#854F0B"/><rect x="4" y="9" width="32" height="4" rx="2" fill="#BA7517"/>`,
-statue:`<rect x="10" y="32" width="20" height="5" rx="1" fill="#888780"/><rect x="14" y="12" width="12" height="21" rx="2" fill="#B4B2A9"/><circle cx="20" cy="10" r="7" fill="#888780"/><circle cx="20" cy="10" r="4" fill="#D3D1C7"/><rect x="17" y="16" width="6" height="10" rx="1" fill="#D3D1C7"/>`,
-bassin:`<ellipse cx="20" cy="27" rx="17" ry="11" fill="#185FA5"/><ellipse cx="20" cy="27" rx="13" ry="8" fill="#378ADD"/><ellipse cx="13" cy="24" rx="4" ry="3" fill="#85B7EB"/><circle cx="11" cy="28" r="3" fill="#3B6D11"/><circle cx="11" cy="28" r="1.5" fill="#D4537E"/><circle cx="27" cy="24" r="2.5" fill="#3B6D11"/>`,
-fontaine:`<ellipse cx="20" cy="32" rx="16" ry="7" fill="#185FA5"/><ellipse cx="20" cy="32" rx="12" ry="5" fill="#378ADD"/><rect x="17" y="17" width="6" height="15" rx="3" fill="#B4B2A9"/><ellipse cx="20" cy="22" rx="11" ry="4" fill="#888780"/><path d="M13 17Q9 9 20 6Q31 9 27 17" fill="none" stroke="#85B7EB" stroke-width="2.5" stroke-linecap="round"/>`,
-arche:`<rect x="4" y="15" width="5" height="23" rx="2" fill="#854F0B"/><rect x="31" y="15" width="5" height="23" rx="2" fill="#854F0B"/><path d="M9 15Q9 4 20 4Q31 4 31 15" stroke="#633806" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="9" cy="11" r="4" fill="#3B6D11"/><circle cx="20" cy="5" r="4" fill="#639922"/><circle cx="31" cy="11" r="4" fill="#3B6D11"/><circle cx="9" cy="11" r="2" fill="#D4537E"/><circle cx="20" cy="5" r="2" fill="#ED93B1"/><circle cx="31" cy="11" r="2" fill="#D4537E"/>`,
-ruche:`<rect x="10" y="29" width="20" height="5" rx="1" fill="#854F0B"/><ellipse cx="20" cy="17" rx="12" ry="14" fill="#EF9F27"/><ellipse cx="20" cy="17" rx="9" ry="11" fill="#BA7517"/><rect x="14" y="10" width="12" height="2.5" rx="1" fill="#EF9F27"/><rect x="13" y="15" width="14" height="2.5" rx="1" fill="#EF9F27"/><rect x="14" y="20" width="12" height="2.5" rx="1" fill="#EF9F27"/>`,
-lock:`<rect x="8" y="17" width="24" height="17" rx="3" fill="#888780"/><path d="M13 17V12C13 7 27 7 27 12V17" stroke="#5F5E5A" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="20" cy="26" r="3" fill="#D3D1C7"/>`,
+/* === SAUVEGARDE === */
+let save = JSON.parse(localStorage.getItem("gardenSave")) || {
+  coins:50,
+  grid:{},
+  size:5,
+  offsetX:0,
+  offsetY:0
 };
-function mkS(type,size){return `<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="display:block">${S[type]||S.grass}</svg>`;}
 
-const BG={fleur:'#FBEAF0',tulipe:'#FFF0F3',lavande:'#EEEDFE',tournesol:'#FAEEDA',pivoine:'#FBEAF0',iris:'#EEEDFE',coquelicot:'#FCEBEB',arbuste:'#EAF3DE',rosier:'#FBEAF0',bambou:'#E1F5EE',cerisier:'#FFF0F3',sapin:'#E1F5EE',palmier:'#FAEEDA',bonsai:'#EAF3DE',haie:'#E1F5EE',allee:'#F1EFE8',lanterne:'#F1EFE8',banc:'#FAEEDA',statue:'#F1EFE8',bassin:'#E6F1FB',fontaine:'#E6F1FB',arche:'#FBEAF0',ruche:'#FAEEDA'};
-const ITEMS=[
-  {id:'allee',n:'Allée',price:25,pres:2,xp:3,cat:'d',lvl:1},
-  {id:'fleur',n:'Fleur',price:40,pres:5,xp:5,cat:'f',lvl:1},
-  {id:'tulipe',n:'Tulipe',price:50,pres:6,xp:5,cat:'f',lvl:1},
-  {id:'arbuste',n:'Arbuste',price:70,pres:8,xp:7,cat:'a',lvl:1},
-  {id:'lavande',n:'Lavande',price:55,pres:7,xp:6,cat:'f',lvl:2},
-  {id:'coquelicot',n:'Coquelicot',price:60,pres:7,xp:6,cat:'f',lvl:2},
-  {id:'lanterne',n:'Lanterne',price:90,pres:10,xp:8,cat:'d',lvl:2},
-  {id:'rosier',n:'Rosier',price:100,pres:12,xp:9,cat:'a',lvl:2},
-  {id:'banc',n:'Banc',price:110,pres:11,xp:8,cat:'d',lvl:2},
-  {id:'tournesol',n:'Tournesol',price:75,pres:9,xp:7,cat:'f',lvl:3},
-  {id:'iris',n:'Iris',price:80,pres:9,xp:7,cat:'f',lvl:3},
-  {id:'bambou',n:'Bambou',price:120,pres:14,xp:10,cat:'a',lvl:3},
-  {id:'haie',n:'Haie',price:130,pres:14,xp:10,cat:'a',lvl:3},
-  {id:'pivoine',n:'Pivoine',price:90,pres:11,xp:9,cat:'f',lvl:4},
-  {id:'statue',n:'Statue',price:160,pres:20,xp:14,cat:'d',lvl:4},
-  {id:'bonsai',n:'Bonsaï',price:180,pres:22,xp:15,cat:'a',lvl:4},
-  {id:'cerisier',n:'Cerisier',price:200,pres:25,xp:16,cat:'a',lvl:4},
-  {id:'ruche',n:'Ruche',price:170,pres:20,xp:14,cat:'d',lvl:4},
-  {id:'sapin',n:'Sapin',price:185,pres:22,xp:15,cat:'a',lvl:5},
-  {id:'bassin',n:'Bassin',price:230,pres:30,xp:18,cat:'d',lvl:5},
-  {id:'arche',n:'Arche',price:260,pres:33,xp:20,cat:'d',lvl:5},
-  {id:'palmier',n:'Palmier',price:250,pres:32,xp:20,cat:'a',lvl:6},
-  {id:'fontaine',n:'Fontaine',price:380,pres:50,xp:30,cat:'d',lvl:6},
+/* === CONFIG === */
+const gridEl = document.getElementById("grid");
+
+/* === SHOP === */
+const items = [
+  {id:"🌸", price:20},
+  {id:"🌷", price:30},
+  {id:"🌳", price:50}
 ];
-const SEASONS=[
-  {n:'Printemps',gc:'#97C459',sc:'#27500A',bg:'#EAF3DE',w:1.3,wa:1.2},
-  {n:'Été',gc:'#4A8C12',sc:'#173404',bg:'#C0DD97',w:0.8,wa:1.7},
-  {n:'Automne',gc:'#B89A40',sc:'#412402',bg:'#F5E8C0',w:1.7,wa:0.6},
-  {n:'Hiver',gc:'#9AB0B5',sc:'#042C53',bg:'#D8E8EE',w:0.3,wa:0.2},
-];
-const XPLVL=[0,60,180,360,600,900,1400];
-const TR={water:8,weed:6,trim:10},TX={water:5,weed:4,trim:6};
-const TL={water:'Arroser',weed:'Désherber',trim:'Tailler'},TC={water:'bw',weed:'bd',trim:'bt'};
 
-let G={coins:80,day:1,xp:0,lvl:1,sel:null,filter:'all',season:0,weather:'clear',expCount:0,
-  cells:new Map(),bounds:{minX:0,maxX:4,minY:0,maxY:2},cam:{x:0,y:0}};
+let selected = null;
 
-const key=(x,y)=>`${x},${y}`;
-function getCell(x,y){const k=key(x,y);if(!G.cells.has(k))G.cells.set(k,{type:'grass',task:null,nd:0,wlt:false});return G.cells.get(k);}
-function inB(x,y){return x>=G.bounds.minX&&x<=G.bounds.maxX&&y>=G.bounds.minY&&y<=G.bounds.maxY;}
-function clampCam(){
-  const gw=G.bounds.maxX-G.bounds.minX+1,gh=G.bounds.maxY-G.bounds.minY+1;
-  G.cam.x=Math.max(G.bounds.minX,Math.min(G.bounds.minX+Math.max(0,gw-VW),G.cam.x));
-  G.cam.y=Math.max(G.bounds.minY,Math.min(G.bounds.minY+Math.max(0,gh-VH),G.cam.y));
-}
-function expCost(){return Math.round(180*Math.pow(1.52,G.expCount));}
+/* === MENU === */
+const sidebar = document.getElementById("sidebar");
+document.getElementById("menuBtn").onclick=()=>{
+  sidebar.classList.toggle("open");
+};
 
-function expandDir(dir){
-  const cost=expCost();if(G.coins<cost)return;
-  G.coins-=cost;G.expCount++;
-  const b=G.bounds;
-  if(dir==='N'){b.minY--;for(let x=b.minX;x<=b.maxX;x++)getCell(x,b.minY);}
-  else if(dir==='S'){b.maxY++;for(let x=b.minX;x<=b.maxX;x++)getCell(x,b.maxY);}
-  else if(dir==='W'){b.minX--;for(let y=b.minY;y<=b.maxY;y++)getCell(b.minX,y);}
-  else if(dir==='E'){b.maxX++;for(let y=b.minY;y<=b.maxY;y++)getCell(b.maxX,y);}
-  clampCam();addXP(20);genTasks();
-  const gw=b.maxX-b.minX+1,gh=b.maxY-b.minY+1;
-  setLog('Expansion vers '+(dir==='N'?'le Nord':dir==='S'?'le Sud':dir==='W'?"l'Ouest":"l'Est")+' · Terrain : '+gw+'×'+gh+' ('+G.cells.size+' cases)');
-  render();
-}
-
-function calcPres(){let p=0;G.cells.forEach(c=>{const it=ITEMS.find(i=>i.id===c.type);if(it)p+=c.wlt?Math.floor(it.pres*.4):it.pres;});return p;}
-function getRating(p){return p>=200?'Légendaire':p>=120?'Maître':p>=70?'Expert':p>=35?'Passionné':p>=12?'Amateur':'Débutant';}
-function getRatingStyle(r){return{Légendaire:['#FAEEDA','#412402'],Maître:['#E6F1FB','#042C53'],Expert:['#EEEDFE','#26215C'],Passionné:['#FBEAF0','#4B1528'],Amateur:['#EAF3DE','#173404'],Débutant:['#EAF3DE','#27500A']}[r];}
-function neglectCount(){let n=0;G.cells.forEach(c=>{if(c.wlt)n++;});return n;}
-function addXP(n){
-  const prev=G.lvl;G.xp+=n;
-  while(G.lvl<XPLVL.length&&G.xp>=XPLVL[G.lvl])G.lvl++;
-  if(G.lvl>prev){const b=document.getElementById('bnr');b.textContent='Niveau '+G.lvl+' atteint ! Nouvelles plantes disponibles.';b.style.display='block';setTimeout(()=>{if(b)b.style.display='none';},3000);}
-}
-
-function genTasks(){
-  const ss=SEASONS[G.season];
-  G.cells.forEach((c)=>{
-    if(c.task)return;
-    const r=Math.random(),t=c.type;
-    if(t==='grass'){if(r<0.28*ss.w)c.task='weed';}
-    else if(['fleur','tulipe','lavande','tournesol','pivoine','iris','coquelicot'].includes(t)){if(r<0.52*ss.wa)c.task='water';else if(r<0.62)c.task='weed';}
-    else if(['arbuste','rosier','haie','bonsai','sapin'].includes(t)){if(r<0.42)c.task='trim';}
-    else if(t==='bambou'){if(r<0.32)c.task='trim';}
-    else if(['cerisier','palmier'].includes(t)){if(r<0.28*ss.wa)c.task='water';}
-    else if(t==='arche'){if(r<0.28)c.task='trim';}
+function renderShop(){
+  sidebar.innerHTML="<h3>Boutique</h3>";
+  items.forEach(it=>{
+    const div=document.createElement("div");
+    div.className="item";
+    div.innerText=it.id+" - "+it.price+"💰";
+    div.onclick=()=>selected=it;
+    sidebar.appendChild(div);
   });
-  if(!Array.from(G.cells.values()).some(c=>c.task)){
-    const gx=Array.from(G.cells.entries()).filter(([,c])=>c.type==='grass');
-    if(gx.length)G.cells.get(gx[Math.floor(Math.random()*gx.length)][0]).task='weed';
-  }
+
+  const expandBtn=document.createElement("div");
+  expandBtn.className="item";
+  expandBtn.innerText="➕ Agrandir";
+  expandBtn.onclick=expand;
+  sidebar.appendChild(expandBtn);
 }
 
-function applyEndOfDay(){
-  const msgs=[];let fine=0,died=0,spread=0;
-  G.cells.forEach((c,k)=>{
-    if(!c.task){if(c.nd>0){c.nd=0;c.wlt=false;}return;}
-    if(c.task==='weed'){
-      fine+=4;
-      const [x,y]=k.split(',').map(Number);
-      const dirs=[[1,0],[-1,0],[0,1],[0,-1]].sort(()=>Math.random()-.5);
-      for(const[dx,dy]of dirs){
-        if(inB(x+dx,y+dy)){const nc=getCell(x+dx,y+dy);if(nc.type==='grass'&&!nc.task){nc.task='weed';spread++;break;}}
-      }
-    }else{
-      c.nd=(c.nd||0)+1;
-      if(c.nd===1){c.wlt=true;fine+=c.task==='water'?9:7;}
-      else if(c.nd>=2){
-        const it=ITEMS.find(i=>i.id===c.type);
-        if(it&&c.type!=='grass'){died++;fine+=20;c.type='grass';}
-        c.wlt=false;c.nd=0;c.task=null;
-      }
-    }
-  });
-  fine=Math.min(fine,60);
-  if(fine>0){G.coins=Math.max(0,G.coins-fine);msgs.push('-'+fine+' pièces de pénalité');}
-  if(died>0)msgs.push(died+' plante(s) morte(s) !');
-  if(spread>0)msgs.push(spread+' mauvaise(s) herbe(s) propagée(s)');
-  return msgs;
-}
-
-function cellClick(x,y){
-  if(!inB(x,y)){setLog('Cette zone n\'est pas encore débloquée. Utilisez les boutons d\'expansion.');return;}
-  const c=getCell(x,y);
-  if(G.sel){
-    if(c.type==='grass'){
-      const it=ITEMS.find(i=>i.id===G.sel);
-      G.coins-=it.price;c.type=G.sel;c.task=null;c.wlt=false;c.nd=0;
-      addXP(it.xp);G.sel=null;
-      setLog('Placé : '+it.n+' · Prestige : '+calcPres()+' · +'+it.xp+' XP');render();
-    }else setLog('Tapez une case de gazon (vert) pour placer cet élément.');
-    return;
-  }
-  if(c.task){
-    const r=TR[c.task],t=TL[c.task],xv=TX[c.task];
-    G.coins+=r;addXP(xv);
-    const ci=(y-G.cam.y)*VW+(x-G.cam.x);
-    const cel=grdEl.children[ci];
-    if(cel&&ci>=0&&ci<VW*VH){const p=document.createElement('div');p.className='pp';p.style.color='#854F0B';p.textContent='+'+r;cel.appendChild(p);setTimeout(()=>p&&p.remove(),700);}
-    c.task=null;c.wlt=false;c.nd=0;
-    setLog(t+' · +'+r+' pièces · +'+xv+' XP');render();
-  }else{setLog('Aucune tâche ici pour l\'instant.');}
-}
-
-function nextDay(){
-  const pm=applyEndOfDay();
-  const pres=calcPres(),vis=Math.floor(pres/10);
-  const msgs=[...pm];
-  const rem=Array.from(G.cells.values()).filter(c=>c.task).length;
-  if(rem===0&&G.day>1){G.coins+=20;msgs.push('Journée parfaite ! +20');}
-  if(vis>0){G.coins+=vis;msgs.push(vis+' pièces visiteurs');}
-  const prevS=G.season;G.day++;G.season=Math.floor((G.day-1)/6)%4;
-  if(G.season!==prevS)msgs.push('Saison : '+SEASONS[G.season].n);
-  G.weather=Math.random()<0.22?'rain':'clear';
-  if(G.weather==='rain'){
-    let rc=0;G.cells.forEach(c=>{if(c.task==='water'){c.task=null;c.wlt=false;c.nd=0;G.coins+=3;rc++;}});
-    if(rc)msgs.push('Pluie — '+rc+' arrosage(s) auto');
-  }
-  genTasks();
-  const wb=document.getElementById('wbox');
-  if(pm.length){wb.textContent='⚠ '+pm.join(' · ');wb.style.display='block';setTimeout(()=>{if(wb)wb.style.display='none';},5000);}
-  setLog('Jour '+G.day+' · '+Array.from(G.cells.values()).filter(c=>c.task).length+' tâche(s). '+msgs.join(' · '));
-  render();
-}
-
-function cancelSel(){G.sel=null;setLog('Placement annulé.');render();}
-function setFilter(f){G.filter=f;render();}
-function selShop(id){G.sel=G.sel===id?null:id;if(G.sel){const it=ITEMS.find(i=>i.id===id);setLog('Sélectionné : '+it.n+' · Tapez une case de gazon pour placer.');}render();}
-function setLog(m){const e=document.getElementById('log');if(e)e.textContent=m;}
+/* === GRID === */
+function key(x,y){return x+"_"+y;}
 
 function render(){
-  const ss=SEASONS[G.season];
-  const pres=calcPres(),rating=getRating(pres),rs=getRatingStyle(rating);
-  const gw=G.bounds.maxX-G.bounds.minX+1,gh=G.bounds.maxY-G.bounds.minY+1;
-  const nc=neglectCount();
+  gridEl.innerHTML="";
+  document.getElementById("stats").innerText="💰 "+save.coins;
 
-  document.getElementById('sr').innerHTML=
-    `<div class="sc"><span class="sl">Pièces</span><span class="sv">${G.coins}</span></div>`+
-    `<div class="sc"><span class="sl">Jour</span><span class="sv">${G.day}</span></div>`+
-    `<div class="sc"><span class="sl">Jardin</span><span class="sv">${gw}×${gh}</span></div>`+
-    `<div class="sc"><span class="sl">Niv.</span><span class="sv">${G.lvl}</span></div>`;
+  const size=save.size;
 
-  document.getElementById('bdgr').innerHTML=
-    `<span class="bk" style="background:${ss.bg};color:${ss.sc};">${ss.n}</span>`+
-    `<span class="bk" style="background:${G.weather==='rain'?'#B5D4F4':'#FAEEDA'};color:${G.weather==='rain'?'#0C447C':'#633806'};">${G.weather==='rain'?'Pluie':'Ensoleillé'}</span>`+
-    `<span class="bk" style="background:${rs[0]};color:${rs[1]};">${rating} ${pres}pt</span>`+
-    (nc>0?`<span class="bk" style="background:#FCEBEB;color:#791F1F;">⚠ ${nc} fané(s)</span>`:'');
+  gridEl.style.gridTemplateColumns=`repeat(${size},60px)`;
 
-  const xpCur=XPLVL[G.lvl-1]||0,xpNxt=G.lvl<XPLVL.length?XPLVL[G.lvl]:XPLVL[XPLVL.length-1];
-  const maxed=G.lvl>=XPLVL.length;
-  const xpPct=maxed?100:Math.round(((G.xp-xpCur)/(xpNxt-xpCur))*100);
-  const presPct=Math.min(100,Math.round(pres/3));
-  document.getElementById('bars').innerHTML=
-    `<div class="brw"><span>Prestige ${pres}</span><span>${rating}</span></div>`+
-    `<div class="bgg"><div class="gf" style="width:${presPct}%"></div></div>`+
-    `<div class="brw"><span>Niv.${G.lvl}${maxed?' MAX':''}</span><span>${maxed?'MAX':(G.xp-xpCur)+'/'+(xpNxt-xpCur)+' XP'}</span></div>`+
-    `<div class="bgg"><div class="xf" style="width:${xpPct}%"></div></div>`;
+  for(let y=0;y<size;y++){
+    for(let x=0;x<size;x++){
+      const div=document.createElement("div");
+      div.className="cell";
 
-  grdEl.innerHTML='';
-  for(let row=G.cam.y;row<G.cam.y+VH;row++){
-    for(let col=G.cam.x;col<G.cam.x+VW;col++){
-      const div=document.createElement('div');
-      div.style.width=CS+'px';div.style.height=CS+'px';
-      if(inB(col,row)){
-        const c=getCell(col,row);
-        div.className='cel'+(c.wlt?' wl':'')+(G.sel&&c.type==='grass'?' cp':'');
-        div.style.background=c.wlt?'#C8A050':(BG[c.type]||ss.gc);
-        if(c.type==='grass'&&!c.wlt)div.style.background=ss.gc;
-        div.innerHTML=mkS(c.type,CS-6);
-        div.dataset.x=col;div.dataset.y=row;
-        if(c.task){
-          const b=document.createElement('div');
-          b.className='tb '+(c.wlt?'bu':TC[c.task]);
-          b.textContent=c.wlt?'⚠ Urgent':TL[c.task];
-          div.appendChild(b);
-        }
-      }else{
-        div.className='cel vd';
-        div.innerHTML=mkS('lock',Math.floor(CS*.55));
+      const k=key(x,y);
+
+      if(save.grid[k]){
+        div.classList.add("plant");
+        div.innerText=save.grid[k];
       }
-      grdEl.appendChild(div);
+
+      div.onclick=()=>{
+        if(selected && save.coins>=selected.price){
+          save.coins-=selected.price;
+          save.grid[k]=selected.id;
+          saveGame();
+          render();
+        }
+      };
+
+      gridEl.appendChild(div);
     }
   }
 
-  // Edge arrows
-  document.getElementById('ea').style.display=G.cam.x>G.bounds.minX?'block':'none';
-  document.getElementById('ee').style.display=G.cam.x+VW-1<G.bounds.maxX?'block':'none';
-  document.getElementById('en').style.display=G.cam.y>G.bounds.minY?'block':'none';
-  document.getElementById('es').style.display=G.cam.y+VH-1<G.bounds.maxY?'block':'none';
-
-  const cost=expCost(),canE=G.coins>=cost;
-  document.getElementById('ned').innerHTML=
-    `<div></div>`+
-    `<button class="eb${canE?' af':''}" ${canE?`onclick="expandDir('N')"`:''} ${!canE?'disabled':''}><span class="ebarr">↑</span><br>Nord<br>${cost}p</button>`+
-    `<div></div>`+
-    `<button class="eb${canE?' af':''}" ${canE?`onclick="expandDir('W')"`:''} ${!canE?'disabled':''}><span class="ebarr">←</span><br>Ouest<br>${cost}p</button>`+
-    `<div class="ebmi">${gw}×${gh}<br><span style="font-size:8px">${G.cells.size} cases</span></div>`+
-    `<button class="eb${canE?' af':''}" ${canE?`onclick="expandDir('E')"`:''} ${!canE?'disabled':''}><span class="ebarr">→</span><br>Est<br>${cost}p</button>`+
-    `<div></div>`+
-    `<button class="eb${canE?' af':''}" ${canE?`onclick="expandDir('S')"`:''} ${!canE?'disabled':''}><span class="ebarr">↓</span><br>Sud<br>${cost}p</button>`+
-    `<div></div>`;
-
-  document.getElementById('flts').innerHTML=
-    ['all','f','a','d'].map(f=>`<button class="ft${G.filter===f?' on':''}" onclick="setFilter('${f}')">${{all:'Tous',f:'Fleurs',a:'Arbres',d:'Décos'}[f]}</button>`).join('');
-
-  const vis=ITEMS.filter(it=>G.filter==='all'||it.cat===G.filter);
-  document.getElementById('shp').innerHTML=vis.map(it=>{
-    const locked=G.lvl<it.lvl,canBuy=!locked&&G.coins>=it.price;
-    const cls='si'+(G.sel===it.id?' sel':'')+(locked?' lk':(!canBuy?' ds':''));
-    return `<div class="${cls}" onclick="${canBuy?`selShop('${it.id}')`:''}">`+
-      `<div style="display:flex;justify-content:center">${mkS(it.id,28)}</div>`+
-      `<div class="sn">${it.n}</div>`+
-      `<div class="sp">${locked?'':it.price+'p'}</div>`+
-      (locked?`<span class="slv">Niv.${it.lvl}</span>`:`<div class="ss">+${it.pres}pt</div>`)+
-      `</div>`;
-  }).join('');
-
-  document.getElementById('cbtn').style.display=G.sel?'inline-block':'none';
+  autoZoom();
 }
 
-let panActive=false,panSX=0,panSY=0,panMoved=false;
-vpEl.addEventListener('pointerdown',e=>{
-  panActive=true;panSX=e.clientX;panSY=e.clientY;panMoved=false;
-  try{vpEl.setPointerCapture(e.pointerId);}catch(ex){}
-},{ passive:false });
-vpEl.addEventListener('pointermove',e=>{
-  if(!panActive)return;
-  e.preventDefault();
-  const dx=e.clientX-panSX,dy=e.clientY-panSY;
-  if(Math.abs(dx)>9||Math.abs(dy)>9){panMoved=true;grdEl.style.transform=`translate(${dx}px,${dy}px)`;}
-},{ passive:false });
-vpEl.addEventListener('pointerup',e=>{
-  if(!panActive)return;panActive=false;
-  if(panMoved){
-    const dx=e.clientX-panSX,dy=e.clientY-panSY;
-    G.cam.x+=Math.round(-dx/CS);G.cam.y+=Math.round(-dy/CS);clampCam();
+/* === ZOOM AUTO === */
+function autoZoom(){
+  const size=save.size;
+  let scale=1;
+
+  if(size>10) scale=0.8;
+  if(size>15) scale=0.6;
+  if(size>25) scale=0.4;
+
+  gridEl.style.transform=`scale(${scale})`;
+}
+
+/* === EXPANSION 4 DIRECTIONS === */
+function expand(){
+  save.size+=2;
+  saveGame();
+  render();
+}
+
+/* === DRAG === */
+let dragging=false, startX, startY;
+
+gridEl.onmousedown=e=>{
+  dragging=true;
+  startX=e.clientX-save.offsetX;
+  startY=e.clientY-save.offsetY;
+};
+
+window.onmousemove=e=>{
+  if(dragging){
+    save.offsetX=e.clientX-startX;
+    save.offsetY=e.clientY-startY;
+    gridEl.style.transform+=` translate(${save.offsetX}px,${save.offsetY}px)`;
   }
-  grdEl.style.transform='';
-  if(panMoved){setTimeout(()=>panMoved=false,60);render();}
-});
-vpEl.addEventListener('pointercancel',()=>{panActive=false;panMoved=false;grdEl.style.transform='';});
+};
 
-grdEl.addEventListener('click',e=>{
-  if(panMoved)return;
-  const cel=e.target.closest('[data-x]');
-  if(!cel)return;
-  cellClick(parseInt(cel.dataset.x),parseInt(cel.dataset.y));
-});
+window.onmouseup=()=>dragging=false;
 
-for(let y=0;y<=2;y++)for(let x=0;x<=4;x++)getCell(x,y);
-genTasks();render();
-setLog('Jour 1 · Printemps · Tapez les badges pour les tâches · Glissez pour naviguer · Étendez dans 4 directions · Attention, les plantes négligées flétrissent puis meurent !');
+/* === MOBILE SWIPE === */
+gridEl.ontouchstart=e=>{
+  dragging=true;
+  startX=e.touches[0].clientX-save.offsetX;
+  startY=e.touches[0].clientY-save.offsetY;
+};
+
+gridEl.ontouchmove=e=>{
+  if(dragging){
+    save.offsetX=e.touches[0].clientX-startX;
+    save.offsetY=e.touches[0].clientY-startY;
+    gridEl.style.transform+=` translate(${save.offsetX}px,${save.offsetY}px)`;
+  }
+};
+
+gridEl.ontouchend=()=>dragging=false;
+
+/* === JOUR SUIVANT === */
+document.getElementById("nextDay").onclick=()=>{
+  save.coins+=10;
+  saveGame();
+  render();
+};
+
+/* === SAVE === */
+function saveGame(){
+  localStorage.setItem("gardenSave",JSON.stringify(save));
+}
+
+/* INIT */
+renderShop();
+render();
+
 </script>
+
+</body>
+</html>
